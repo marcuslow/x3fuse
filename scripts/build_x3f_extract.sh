@@ -8,6 +8,10 @@
 # (../x3fuse-core); override with the X3FUSE_CORE env var. The Xcode project
 # still embeds and code-signs the checked-in X3Fuse/x3f_extract, so re-run
 # this whenever x3fuse-core is updated, then commit the new binary.
+#
+# The binary currently includes the unreleased DP Quattro ColorTemp fix from
+# https://github.com/sagwaco/x3fuse-core/pull/14 (commit d12528f). Check out
+# that branch before reproducing the checked-in binary.
 
 set -euo pipefail
 

@@ -8,11 +8,29 @@ A modern macOS app for converting Sigma Merrill and Quattro X3F RAW files.
 
 X3Fuse is a RAW conversion tool that converts your Sigma Merrill and Quattro X3F files into practical, compatible formats like DNG, TIFF, and JPEG. It's an essential bridge between your Sigma cameras and your preferred editing suite, including apps that use Adobe Camera Raw (Lightroom, Photoshop), LibRaw (Darktable, RawTherapee, RapidRAW), and Apple's RAW engine (Pixelmator, Photomator, Preview).
 
+> [!IMPORTANT]
+> This fork contains an unofficial compatibility build for DP Quattro files
+> shot with manual color-temperature white balance. The source fix is proposed
+> upstream in [x3fuse-core PR #14](https://github.com/sagwaco/x3fuse-core/pull/14).
+> Download the patched app from this fork's
+> [Releases page](https://github.com/marcuslow/x3fuse/releases/latest).
+
+The compatibility build is locally (ad-hoc) signed rather than notarized with
+the upstream developer's Apple certificate. After moving it to Applications,
+try Control-clicking the app and choosing **Open**. If macOS still blocks it,
+verify the release SHA-256 checksum and then remove quarantine from this app
+only:
+
+```bash
+xattr -dr com.apple.quarantine /Applications/X3Fuse.app
+```
+
 ## Features
 
 - **Multiple Output Formats**: Convert X3F files to DNG, TIFF, or JPEG formats
 - **Batch Processing**: Process multiple files at once with an intuitive queue system
 - **Native macOS App**: Built with SwiftUI for a seamless macOS experience
+- **Apple Silicon Acceleration**: Runs a native arm64 converter and uses multiple CPU cores for decoding, preprocessing, and denoising
 - **EXIF Data Preservation**: Attempts to preserve metadata like preferred aspect ratio
 - **Broad DNG Compatibility**: Merrill and Quattro DNGs are tested with Adobe, LibRaw, and Apple RAW-based workflows
 - **Multi-language Support**: Available in English, Spanish, Japanese, Korean, and Chinese\*

@@ -1,3 +1,9 @@
+# 0.1.5-dp2q-fix.1 - Unofficial DP2Q ColorTemp Fix
+
+- Fix DNG conversion for DP Quattro files shot with manual color-temperature white balance by interpolating the camera's embedded gain and color-matrix table.
+- Keep conversion native and multicore on Apple Silicon; the universal converter runs arm64 directly and parallelizes decoding, preprocessing, and denoising across available cores.
+- This build is locally signed and is not an official notarized release from the upstream X3Fuse project.
+
 # 0.1.5 - Beta 1.1.5
 
 - Update the core converter to x3fuse-core 0.1.2, improving compatibility of converted DNGs (including compressed DNGs) with software powered by Apple RAW and LibRaw, and improving Capture One compatibility for Merrill-generation files.
