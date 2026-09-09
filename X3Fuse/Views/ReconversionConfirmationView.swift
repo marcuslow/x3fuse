@@ -112,15 +112,17 @@ struct ReconversionConfirmationView: View {
   }
 }
 
-#Preview {
-  let sampleFiles = [
-    X3FFile(url: URL(fileURLWithPath: "/Users/test/Documents/IMG_001.X3F")),
-    X3FFile(url: URL(fileURLWithPath: "/Users/test/Documents/IMG_002.X3F")),
-  ]
+#if DEBUG
+  #Preview {
+    let sampleFiles = [
+      X3FFile(url: URL(fileURLWithPath: "/Users/test/Documents/IMG_001.X3F")),
+      X3FFile(url: URL(fileURLWithPath: "/Users/test/Documents/IMG_002.X3F")),
+    ]
 
-  ReconversionConfirmationView(
-    conflictingFiles: sampleFiles,
-    onConfirm: {},
-    onCancel: {}
-  )
-}
+    ReconversionConfirmationView(
+      conflictingFiles: sampleFiles,
+      onConfirm: {},
+      onCancel: {}
+    )
+  }
+#endif

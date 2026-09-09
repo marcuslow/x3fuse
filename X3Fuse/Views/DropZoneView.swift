@@ -108,9 +108,11 @@ struct DropZoneView: View {
   }
 }
 
-#Preview {
-  DropZoneView { urls in
-    print("Dropped files: \(urls)")
+#if DEBUG
+  #Preview {
+    DropZoneView { urls in
+      print("Dropped files: \(urls)")
+    }
+    .frame(width: 400, height: 300)
   }
-  .frame(width: 400, height: 300)
-}
+#endif

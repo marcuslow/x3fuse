@@ -1,6 +1,7 @@
-# 0.1.5-dp2q-fix.1 - Unofficial DP2Q ColorTemp Fix
+# 0.1.5-dp2q-fix.2 - Unofficial DP2Q and Batch Fixes
 
 - Fix DNG conversion for DP Quattro files shot with manual color-temperature white balance by interpolating the camera's embedded gain and color-matrix table.
+- Fix the main Convert button processing only one automatically selected row after multiple files are dragged into the queue; it now always converts the full queue.
 - Keep conversion native and multicore on Apple Silicon; the universal converter runs arm64 directly and parallelizes decoding, preprocessing, and denoising across available cores.
 - This build is locally signed and is not an official notarized release from the upstream X3Fuse project.
 

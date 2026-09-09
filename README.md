@@ -10,8 +10,10 @@ X3Fuse is a RAW conversion tool that converts your Sigma Merrill and Quattro X3F
 
 > [!IMPORTANT]
 > This fork contains an unofficial compatibility build for DP Quattro files
-> shot with manual color-temperature white balance. The source fix is proposed
-> upstream in [x3fuse-core PR #14](https://github.com/sagwaco/x3fuse-core/pull/14).
+> shot with manual color-temperature white balance. It also fixes the main
+> Convert button processing only one file after a multi-file drag. The core
+> compatibility fix is proposed upstream in
+> [x3fuse-core PR #14](https://github.com/sagwaco/x3fuse-core/pull/14).
 > Download the patched app from this fork's
 > [Releases page](https://github.com/marcuslow/x3fuse/releases/latest).
 
@@ -69,7 +71,7 @@ If you have a Sigma Foveon camera from the Merrill and Quattro generations that 
 
 ### Option 1: Download Release
 
-1. Download the latest .zip from the [Releases](https://github.com/sagwaco/x3fuse/releases) page
+1. Download the latest patched `.zip` from [marcuslow/x3fuse Releases](https://github.com/marcuslow/x3fuse/releases/latest)
 2. Extract the .zip file and move the `X3Fuse.app` to your Applications folder.
 3. Launch `X3Fuse.app` from your Applications folder.
 

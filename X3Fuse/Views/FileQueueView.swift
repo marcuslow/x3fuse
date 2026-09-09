@@ -230,7 +230,9 @@ struct FileQueueView: View {
 
 // MARK: - Preview
 
-#Preview {
-  FileQueueView(selectedFileIDs: .constant(Set<X3FFile.ID>()), onReconversion: { _ in })
-    .frame(width: 800, height: 600)
-}
+#if DEBUG
+  #Preview {
+    FileQueueView(selectedFileIDs: .constant(Set<X3FFile.ID>()), onReconversion: { _ in })
+      .frame(width: 800, height: 600)
+  }
+#endif

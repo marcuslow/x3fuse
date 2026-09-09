@@ -414,7 +414,9 @@ extension DateFormatter {
   }()
 }
 
-#Preview {
-  SettingsView()
-    .environmentObject(UpdaterService.shared)
-}
+#if DEBUG
+  #Preview {
+    SettingsView()
+      .environmentObject(UpdaterService.shared)
+  }
+#endif

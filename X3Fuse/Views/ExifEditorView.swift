@@ -323,20 +323,22 @@ struct ExifEditorView: View {
   }
 }
 
-#Preview {
-  let sampleFiles = [
-    X3FFile(url: URL(fileURLWithPath: "/path/to/sample1.x3f")),
-    X3FFile(url: URL(fileURLWithPath: "/path/to/sample2.x3f")),
-  ]
+#if DEBUG
+  #Preview {
+    let sampleFiles = [
+      X3FFile(url: URL(fileURLWithPath: "/path/to/sample1.x3f")),
+      X3FFile(url: URL(fileURLWithPath: "/path/to/sample2.x3f")),
+    ]
 
-  sampleFiles[0].cameraModel = "SIGMA DP2 Merrill"
-  sampleFiles[0].aperture = "2.8"
-  sampleFiles[0].lensId = "Fixed Lens"
+    sampleFiles[0].cameraModel = "SIGMA DP2 Merrill"
+    sampleFiles[0].aperture = "2.8"
+    sampleFiles[0].lensId = "Fixed Lens"
 
-  sampleFiles[1].cameraModel = "SIGMA DP2 Merrill"
-  sampleFiles[1].aperture = "4.0"
-  sampleFiles[1].lensId = "Fixed Lens"
+    sampleFiles[1].cameraModel = "SIGMA DP2 Merrill"
+    sampleFiles[1].aperture = "4.0"
+    sampleFiles[1].lensId = "Fixed Lens"
 
-  return ExifEditorView(files: sampleFiles)
-    .frame(width: 400, height: 600)
-}
+    return ExifEditorView(files: sampleFiles)
+      .frame(width: 400, height: 600)
+  }
+#endif
