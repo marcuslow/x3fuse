@@ -1,3 +1,10 @@
+# 0.1.5-dp2q-fix.3 - Unofficial Dual-Illuminant DNG Profiles
+
+- Write dual-illuminant camera profiles for Quattro DNGs: ColorMatrix1/ForwardMatrix1 from the camera's Incandescent calibration (CIE Standard Illuminant A) and ColorMatrix2/ForwardMatrix2 from its Overcast calibration (D65), so raw converters interpolate the camera's own matrices by scene colour temperature instead of reusing one daylight matrix. Source: x3fuse-core branch `feat/dual-illuminant-profiles`.
+- Correct the manual colour-temperature white-balance frame: ColorTemp gains are normalised into the preset gain frame (a 5200 K shot now lands on the Sunlight preset), fixing the green cast in the proposed upstream fix (x3fuse-core PR #14).
+- Test build: the embedded converter is Apple Silicon (arm64) only; the app bundle itself remains universal.
+- This build is locally signed and is not an official notarized release from the upstream X3Fuse project.
+
 # 0.1.5-dp2q-fix.2 - Unofficial DP2Q and Batch Fixes
 
 - Fix DNG conversion for DP Quattro files shot with manual color-temperature white balance by interpolating the camera's embedded gain and color-matrix table.
