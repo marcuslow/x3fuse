@@ -1,177 +1,128 @@
-# X3Fuse
+# X3Fuse — dual-illuminant DNGs for Sigma Foveon cameras
 
-A modern macOS app for converting Sigma Merrill and Quattro X3F RAW files.
+**An unofficial build of [X3Fuse](https://github.com/sagwaco/x3fuse) that converts Sigma Merrill and Quattro X3F files into DNGs carrying two camera colour profiles instead of one — so raw editors that read both, above all Apple Photos, reproduce Foveon colour correctly under any light, and keep it correct when you move the white-balance slider.**
 
-![X3Fuse logo and app screeenshot](app-screenshot.png)
+X3Fuse itself is the work of [Sang Lee (mangosango)](https://github.com/mangosango) at [sagwaco](https://github.com/sagwaco): the macOS app, the [x3fuse-core](https://github.com/sagwaco/x3fuse-core) Rust converter it embeds, and the DNG-compatibility work that makes Foveon files open in Adobe, LibRaw and Apple RAW engines at all. This fork adds a colour-science layer on top and fixes a few things found along the way. If you don't need what's described below, use the [official release](https://github.com/sagwaco/x3fuse/releases).
 
-## Overview
-
-X3Fuse is a RAW conversion tool that converts your Sigma Merrill and Quattro X3F files into practical, compatible formats like DNG, TIFF, and JPEG. It's an essential bridge between your Sigma cameras and your preferred editing suite, including apps that use Adobe Camera Raw (Lightroom, Photoshop), LibRaw (Darktable, RawTherapee, RapidRAW), and Apple's RAW engine (Pixelmator, Photomator, Preview).
+![X3Fuse logo and app screenshot](app-screenshot.png)
 
 > [!IMPORTANT]
-> This fork contains an unofficial compatibility build for DP Quattro files
-> shot with manual color-temperature white balance. It also fixes the main
-> Convert button processing only one file after a multi-file drag, and (from
-> fix.4) writes dual-illuminant DNG camera profiles for Quattro files, which
-> Apple Photos and Adobe Lightroom use for accurate colour under tungsten and
-> mixed light. Capture One does not support two-matrix DNGs; Capture One users
-> should stay on fix.2. fix.4 is Apple Silicon only. The core compatibility
-> fix is proposed upstream in
-> [x3fuse-core PR #14](https://github.com/sagwaco/x3fuse-core/pull/14).
-> Download the patched app from this fork's
-> [Releases page](https://github.com/marcuslow/x3fuse/releases/latest).
+> **Download:** [latest release](https://github.com/marcuslow/x3fuse/releases/latest) · **Apple Silicon only** · locally signed, not notarized (see [Installation](#installation)) · **Capture One users: stay on [fix.2](https://github.com/marcuslow/x3fuse/releases/tag/v0.1.5-dp2q-fix.2)** (see [Editor support](#editor-support))
 
-The compatibility build is locally (ad-hoc) signed rather than notarized with
-the upstream developer's Apple certificate. After moving it to Applications,
-try Control-clicking the app and choosing **Open**. If macOS still blocks it,
-verify the release SHA-256 checksum and then remove quarantine from this app
-only:
+## Why two profiles
 
-```bash
-xattr -dr com.apple.quarantine /Applications/X3Fuse.app
-```
+A DNG tells the raw editor how the sensor's three channels map to real colour through a `ColorMatrix`. That mapping is not fixed — it depends on the light the scene was lit by, because the sensor's spectral response and the illuminant's spectrum interact. A matrix measured under daylight is slightly wrong under tungsten, and vice versa. Foveon sensors, with their three stacked silicon layers and heavily overlapping spectral responses, are more sensitive to this than Bayer sensors.
 
-## Features
+A single-profile DNG carries one matrix, measured at one illuminant. White balance is then just three per-channel gains laid on top. Gains can make a grey card come out grey under any light, but they cannot repair the *hue* errors of using the wrong matrix: saturated reds drift orange, skin loses its hue, deep blues shift. The further the actual light is from the calibration illuminant — and the further you drag the white-balance slider from as-shot — the larger the error.
 
-- **Multiple Output Formats**: Convert X3F files to DNG, TIFF, or JPEG formats
-- **Batch Processing**: Process multiple files at once with an intuitive queue system
-- **Native macOS App**: Built with SwiftUI for a seamless macOS experience
-- **Apple Silicon Acceleration**: Runs a native arm64 converter and uses multiple CPU cores for decoding, preprocessing, and denoising
-- **EXIF Data Preservation**: Attempts to preserve metadata like preferred aspect ratio
-- **Broad DNG Compatibility**: Merrill and Quattro DNGs are tested with Adobe, LibRaw, and Apple RAW-based workflows
-- **Multi-language Support**: Available in English, Spanish, Japanese, Korean, and Chinese\*
-- **Drag & Drop Interface**: Simple file management with drag and drop support
-- **Conversion Settings**: Customizable output options for your workflow
+The DNG specification solves this with **dual-illuminant profiles**: two matrices, one for CIE Standard Illuminant A (tungsten, 2856 K) and one for D65 (daylight, 6504 K). The editor estimates the scene's colour temperature and blends the two, so colour stays correct across the whole range. Every Adobe-made camera profile works this way. Most X3F converters write one matrix.
 
-<sub>\*Don't see your language? Help us translate! See [Contributing](#contributing) below.</sub>
+Sigma's Quattro cameras already record what's needed. The CAMF metadata in every Quattro X3F carries a colour-correction matrix and a gain triplet for each white-balance preset, including the body's own tungsten (`Incandescent`) and daylight (`Overcast`) calibrations. This build reads both, adapts them into the DNG's XYZ frame (Sigma's matrices are D65-referenced by construction, so each anchor is one Bradford step away) and writes:
 
-## Supported Cameras
+| DNG tag | source | illuminant |
+|---|---|---|
+| `ColorMatrix1` / `ForwardMatrix1` | Overcast calibration | D65 (21) |
+| `ColorMatrix2` / `ForwardMatrix2` | Incandescent calibration | Standard A (17) |
 
-X3Fuse supports X3F files from Sigma cameras including Merrill and Quattro series cameras.
+Both matrices are verified against the camera's own numbers on every conversion: each `ColorMatrix` maps its illuminant's white onto the camera-native neutral that preset produces, and both `ForwardMatrix` tags land on D50. On a daylight shot the as-shot rendering is identical to the single-profile build — the difference appears under tungsten, in mixed light, and whenever you touch the white-balance slider.
 
-| Camera Model           | Tested | Untested |
-| ---------------------- | ------ | -------- |
-| **Merrill Generation** |        |          |
-| Sigma DP1 Merrill      | ✅     |          |
-| Sigma DP2 Merrill      | ✅     |          |
-| Sigma DP3 Merrill      | ✅     |          |
-| Sigma SD1 Merrill      | ✅     |          |
-| **Quattro Generation** |        |          |
-| Sigma DP0 Quattro      | ✅     |          |
-| Sigma DP1 Quattro      | ✅     |          |
-| Sigma DP2 Quattro      | ✅     |          |
-| Sigma DP3 Quattro      | ✅     |          |
-| Sigma SD Quattro       | ✅     |          |
-| Sigma SD Quattro H     | ✅     |          |
+Dual profiles are written for Quattro-generation files. Merrill files keep the single matrix from upstream, whose calibration has not been validated in this frame.
 
-If you have a Sigma Foveon camera from the Merrill and Quattro generations that are not listed here, please let us know! We aim to support all Sigma Merrill and Quattro cameras and are actively looking for additional test files to improve compatibility.
+## Editor support
 
-## System Requirements
+Writing two matrices only helps if the editor reads them, and here the editors differ sharply. Tested on a 79-frame SIGMA dp2 Quattro shoot (manual 5200 K white balance):
 
-- macOS 14.0 (Sonoma) or later
-- Intel or Apple Silicon
+| editor | reads both matrices | white-balance slider | verdict |
+|---|---|---|---|
+| **Apple Photos** — also Preview, Quick Look, Pixelmator, Photomator (Apple RAW engine) | yes | moves smoothly warm ↔ cool around as-shot | **recommended** |
+| **Adobe Lightroom / Camera Raw** | yes (dual-illuminant is Adobe's own design) | expected to behave as with any Adobe profile | not yet tested by this fork |
+| **RawTherapee** | yes, via its DCP path | — | untested |
+| **darktable** | one matrix only | — | untested; dual is harmless but brings nothing |
+| **Luminar Neo** | appears to use one matrix | over-blues and over-warms towards the ends, in our use | not measured |
+| **Capture One 15.3** | **no** | files import as "Custom" white balance; the Kelvin slider goes blue in both directions | **use fix.2** |
+
+### Why Apple Photos handles these files so well
+
+Apple's RAW engine is a faithful DNG reader. It honours `CalibrationIlluminant1/2` and blends both `ColorMatrix` tags by estimated colour temperature; it uses the `ForwardMatrix` path with proper chromatic adaptation to D50; and its white-balance slider is a *colour temperature*, computed through the camera profile along the illuminant locus, rather than a direct scaling of raw channel gains. The result is that a Foveon DNG from this build behaves in Photos exactly like a native raw from a well-profiled camera: warm light renders warm rather than orange, cool light renders cool rather than cyan, and the extremes of the slider are still plausible lights. In our tests both illuminant orderings render identically, and a white-balance sweep across all seven of the camera's presets tracked the expected direction every time.
+
+Capture One is the notable exception. It initialises a DNG's white balance from `CalibrationIlluminant1` as if the picture had been taken under that light — correct for single-matrix files, whose writers set the tag to the shooting illuminant — and its Kelvin model breaks with a second matrix present, in either order. Until that changes, Capture One users should use [fix.2](https://github.com/marcuslow/x3fuse/releases/tag/v0.1.5-dp2q-fix.2), which writes the single-matrix DNGs Capture One handles well; a single-matrix option for this build is planned.
+
+## Also fixed in this fork
+
+- **Manual colour-temperature white balance on Quattro bodies.** Files shot with a Kelvin white balance (CAMF `WhiteBalance` code 11, `ColorTemp`) failed to convert upstream. The camera's `ColorTempTableInfo` is interpolated at `ColorTempValue`, and its gain pair is mapped into the preset gain frame — the table and the presets are normalised differently, and reading the pair naively produces a green cast. Proposed upstream as [x3fuse-core PR #14](https://github.com/sagwaco/x3fuse-core/pull/14).
+- **Convert converts the whole queue.** After dragging several files in, macOS auto-selects one row and upstream converted only that file. Proposed upstream as [x3fuse PR #43](https://github.com/sagwaco/x3fuse/pull/43).
 
 ## Installation
 
-### Option 1: Download Release
+### Requirements
 
-1. Download the latest patched `.zip` from [marcuslow/x3fuse Releases](https://github.com/marcuslow/x3fuse/releases/latest)
-2. Extract the .zip file and move the `X3Fuse.app` to your Applications folder.
-3. Launch `X3Fuse.app` from your Applications folder.
+- macOS 14.0 (Sonoma) or later
+- **Apple Silicon.** The converter embedded in current fork releases is arm64 only. Intel Macs: use [fix.2](https://github.com/marcuslow/x3fuse/releases/tag/v0.1.5-dp2q-fix.2), which is universal, or the [official release](https://github.com/sagwaco/x3fuse/releases).
 
+### Steps
 
-### Option 2: Homebrew
+1. Download the `.zip` from the [latest release](https://github.com/marcuslow/x3fuse/releases/latest) and check its SHA-256 against the one in the release notes.
+2. Extract it and move `X3Fuse.app` to your Applications folder.
+3. Launch it. The app is locally (ad-hoc) signed rather than notarized with the upstream developer's Apple certificate, so macOS may block it the first time: Control-click `X3Fuse.app` and choose **Open**. If it is still blocked, and only after verifying the checksum, remove quarantine from this app alone:
 
-```bash
-brew install --cask sagwaco/tap/x3fuse
-```
-
-Upgrade later with `brew upgrade --cask x3fuse` (the app also self-updates in-app via Sparkle).
-
-### Option 3: Build from Source
-
-1. Clone the repository:
    ```bash
-   git clone https://github.com/sagwaco/x3fuse.git
-   cd x3fuse
+   xattr -dr com.apple.quarantine /Applications/X3Fuse.app
    ```
-2. Open `X3Fuse.xcodeproj` in Xcode
-3. Build and run the project (⌘+R)
 
-## Scripts
-
-### verify_universal_build.sh
-
-```bash
-./scripts/verify_universal_build.sh
-```
-
-This script verifies that the app and its components are properly built as universal binaries. It checks the architecture of the main app executable and any embedded binaries, ensuring they support both Intel and Apple Silicon architectures.
+The app's built-in updater points at the upstream project's feed, so it will not announce new fork releases; check the [Releases page](https://github.com/marcuslow/x3fuse/releases). The upstream Homebrew cask (`sagwaco/tap/x3fuse`) installs the official build, not this one.
 
 ## Usage
 
-1. **Launch X3Fuse** from your Applications folder
+1. Launch X3Fuse.
+2. Drag X3F files onto the window, or use File → Open.
+3. Choose DNG as the output format (dual-illuminant profiles apply to DNG only; TIFF and JPEG are rendered with the as-shot white balance) and set an output folder.
+4. Click **Convert**. The whole queue is processed.
+5. Import the DNGs into Apple Photos — or any editor in the table above — and use the white-balance slider freely.
 
-2. **Add Files**:
-   - Drag and drop X3F files onto the app window
-   - Or use File → Open to browse for files
+## Supported cameras
 
-3. **Configure Settings**:
-   - Choose your output format (DNG, TIFF, or JPEG)
-   - Set output directory preferences
-   - Adjust conversion options as needed
+Inherited from upstream. Dual-illuminant profiles apply to the Quattro generation; the fork's colour work has been verified on the dp2 Quattro and is expected to carry over to the other Quattro bodies, which store the same CAMF calibration data.
 
-4. **Convert**:
-   - Click the Convert button to start processing
-   - Monitor progress in the queue view
-   - Converted files will be saved to your specified location
+| Camera model | status |
+| --- | --- |
+| Sigma DP1 / DP2 / DP3 Merrill, SD1 Merrill | supported upstream; single profile |
+| Sigma DP0 / DP1 / DP2 / DP3 Quattro | dual profile; **dp2 Quattro verified** |
+| Sigma SD Quattro, SD Quattro H | dual profile; untested by this fork |
 
-## DNG Compatibility
+X3I files (Quattro Super Fine Detail mode) are not supported, as upstream. Shoot exposure-bracketed X3Fs and merge the DNGs in your editor instead.
 
-X3Fuse creates DNGs that are designed to work across common RAW decoding engines, not only Adobe Camera Raw. Merrill and Quattro files, including DNGs created with **RAW compression** and/or **Merrill highlight recovery** enabled, have been tested successfully in:
+## Building from source
 
-- Adobe Lightroom and Adobe Photoshop
-- Darktable
-- RawTherapee
-- RapidRAW
-- Pixelmator and Photomator
-- Preview on macOS
+```bash
+git clone https://github.com/marcuslow/x3fuse.git
+cd x3fuse
+open X3Fuse.xcodeproj      # Product → Run
+```
 
-Foveon cameras do not have a color filter array (CFA) like most other cameras, so some RAW applications may still have Foveon-specific rendering differences. If you encounter an issue with a particular editor, please open a GitHub issue with the camera model, conversion settings, and target application.
+The Xcode project embeds the checked-in `X3Fuse/x3f_extract`. To rebuild it from the converter source, clone [marcuslow/x3fuse-core](https://github.com/marcuslow/x3fuse-core) next to this repository, check out the `feat/dual-illuminant-profiles` branch, and run `./scripts/build_x3f_extract.sh` — it needs `rustup` with both Apple targets installed to produce a universal binary. The converter also builds and runs on its own:
 
-## Known Issues
+```bash
+x3f_extract -dng <file.X3F>                          # dual-illuminant (default)
+x3f_extract -dng -dng-single-illuminant <file.X3F>   # legacy single matrix, for comparison
+```
 
-#### X3I files not supported
+To inspect what a DNG carries, note that plain `exiftool -ColorMatrix1` reports the embedded side-profiles' matrix rather than the main one; use `exiftool -a -G1 -IFD0:ColorMatrix1 -IFD0:ColorMatrix2 -IFD0:CalibrationIlluminant1 -IFD0:CalibrationIlluminant2 file.dng`.
 
-X3I files generated in Quattro Super fine detail (SFD) mode are not supported. A workaround is to shoot several exposure bracketed images as X3Fs and then use X3Fuse to convert them to DNG. In a photo editing application like Lightroom, you can then merge the DNG files into an HDR image.
+## Relationship to upstream
 
-## Technical Details
-
-X3Fuse leverages:
-
-- [**x3fuse-core**](https://github.com/sagwaco/x3fuse-core): Core X3F file processing engine
-- [**ExifTool**](https://github.com/exiftool/exiftool): EXIF Metadata handling
+This is a personal fork maintained for Apple Photos users of Sigma Quattro cameras. Fixes that belong upstream are submitted there ([x3fuse-core #14](https://github.com/sagwaco/x3fuse-core/pull/14), [x3fuse #43](https://github.com/sagwaco/x3fuse/pull/43)); the dual-illuminant work is kept here until the editor-support picture — Capture One in particular — is clearer. Issues about the dual-illuminant profiles or these releases belong on [this fork's issue tracker](https://github.com/marcuslow/x3fuse/issues); everything else belongs [upstream](https://github.com/sagwaco/x3fuse/issues).
 
 ## Acknowledgements
 
-[x3fuse-core](https://github.com/sagwaco/x3fuse-core), which powers the x3f processing in x3fuse is based on [x3f_tools](https://github.com/Kalpanika/x3f). This project is not affiliated with nor endorsed by the creators of x3f_tools.
+- [**X3Fuse**](https://github.com/sagwaco/x3fuse) and [**x3fuse-core**](https://github.com/sagwaco/x3fuse-core) by [Sang Lee (mangosango)](https://github.com/mangosango) / [sagwaco](https://github.com/sagwaco) — the app, the Rust converter, and the DNG-compatibility groundwork this fork builds on.
+- [**x3f_tools**](https://github.com/Kalpanika/x3f) by Kalpanika, the original C/C++ Foveon converter that x3fuse-core ports. This project is not affiliated with nor endorsed by its creators.
+- [**ExifTool**](https://github.com/exiftool/exiftool) for metadata handling, and [**Sparkle**](https://sparkle-project.org) for the update framework.
 
 ## License
 
-This project is licensed under the terms specified in the [LICENSE](LICENSE) file.
+X3Fuse is licensed under the [GNU General Public License v3.0](LICENSE), as upstream. x3fuse-core is licensed under Apache-2.0.
 
-This project is not affiliated nor endorsed by Sigma Corporation. Sigma and Foveon are trademarks of Sigma Corporation.
-
-## Contributing
-
-Contributions are welcome! Please feel free to submit a [Pull Request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request).
-
-## Support
-
-If you encounter any issues or have questions:
-
-- Open an issue on [GitHub Issues](https://github.com/sagwaco/x3fuse/issues)
-- Check the [Releases](https://github.com/sagwaco/x3fuse/releases) page for updates
+This project is not affiliated with nor endorsed by Sigma Corporation. Sigma and Foveon are trademarks of Sigma Corporation.
 
 ## Privacy
 
