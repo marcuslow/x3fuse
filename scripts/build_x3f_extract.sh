@@ -11,10 +11,11 @@
 #
 # The binary currently includes the unreleased DP Quattro ColorTemp fix from
 # https://github.com/sagwaco/x3fuse-core/pull/14 plus the dual-illuminant DNG
-# profiles from marcuslow/x3fuse-core branch feat/dual-illuminant-profiles.
-# Check out that branch before reproducing the checked-in binary.
+# profiles from marcuslow/x3fuse-core branch feat/dual-illuminant-profiles
+# (commit bf1ee5e, D65 first). Check out that branch before reproducing the
+# checked-in binary.
 #
-# NOTE: the binary checked in on the feat/dual-illuminant-dng app branch is
+# NOTE: the binary checked in for fix.4 is
 # arm64-only (built with Homebrew's rust, which has no x86_64 std and no
 # rustup). Re-run this script with rustup installed for a universal build.
 

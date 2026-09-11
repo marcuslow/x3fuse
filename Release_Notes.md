@@ -1,3 +1,11 @@
+# 0.1.5-dp2q-fix.4 - Unofficial Dual-Illuminant DNG Profiles
+
+- Quattro DNGs now carry dual-illuminant camera profiles: ColorMatrix1/ForwardMatrix1 from the camera's Overcast calibration (D65) and ColorMatrix2/ForwardMatrix2 from its Incandescent calibration (CIE Standard Illuminant A). Readers that support both matrices — Apple Photos, Preview and Quick Look (Apple RAW), Adobe Lightroom and Camera Raw — blend them by scene colour temperature, so colours stay accurate under tungsten and mixed light and when the white-balance slider moves away from as-shot. On daylight shots the as-shot rendering is unchanged.
+- Capture One 15.3 does not handle two-matrix DNGs: files import with a "Custom" white balance and the Kelvin slider misbehaves regardless of the illuminant order. If you use Capture One, stay on fix.2 for now; a single-matrix option for this build is planned.
+- Manual colour-temperature (ColorTemp) white balance is mapped into the camera's preset gain frame, fixing the green cast in the first version of the upstream fix (x3fuse-core PR #14, `291c2eb`).
+- Apple Silicon only: the embedded converter in this build is arm64. Intel Macs should use fix.2.
+- This build is locally signed and is not an official notarized release from the upstream X3Fuse project.
+
 # 0.1.5-dp2q-fix.3 - Unofficial Dual-Illuminant DNG Profiles
 
 - Write dual-illuminant camera profiles for Quattro DNGs: ColorMatrix1/ForwardMatrix1 from the camera's Incandescent calibration (CIE Standard Illuminant A) and ColorMatrix2/ForwardMatrix2 from its Overcast calibration (D65), so raw converters interpolate the camera's own matrices by scene colour temperature instead of reusing one daylight matrix. Source: x3fuse-core branch `feat/dual-illuminant-profiles`.

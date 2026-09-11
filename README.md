@@ -11,8 +11,12 @@ X3Fuse is a RAW conversion tool that converts your Sigma Merrill and Quattro X3F
 > [!IMPORTANT]
 > This fork contains an unofficial compatibility build for DP Quattro files
 > shot with manual color-temperature white balance. It also fixes the main
-> Convert button processing only one file after a multi-file drag. The core
-> compatibility fix is proposed upstream in
+> Convert button processing only one file after a multi-file drag, and (from
+> fix.4) writes dual-illuminant DNG camera profiles for Quattro files, which
+> Apple Photos and Adobe Lightroom use for accurate colour under tungsten and
+> mixed light. Capture One does not support two-matrix DNGs; Capture One users
+> should stay on fix.2. fix.4 is Apple Silicon only. The core compatibility
+> fix is proposed upstream in
 > [x3fuse-core PR #14](https://github.com/sagwaco/x3fuse-core/pull/14).
 > Download the patched app from this fork's
 > [Releases page](https://github.com/marcuslow/x3fuse/releases/latest).
