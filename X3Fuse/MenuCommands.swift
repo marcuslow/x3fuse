@@ -80,9 +80,8 @@ struct MenuCommands: Commands {
     // Conversion menu
     CommandMenu(LocalizationService.menuConversionTitle) {
       Button(LocalizationService.menuConversionConvertAllFiles) {
-        Task {
-          await FileProcessor.shared.processAllFiles()
-        }
+        // Routed through ContentView so the overwrite/skip dialog applies here too.
+        NotificationCenter.default.post(name: NSNotification.Name("ConvertAllFiles"), object: nil)
       }
       .keyboardShortcut("r", modifiers: .command)
       .disabled(ConversionQueue.shared.files.isEmpty || ConversionQueue.shared.isProcessing)

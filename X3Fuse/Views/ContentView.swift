@@ -288,11 +288,14 @@ struct ContentView: View {
     // The primary Convert button always processes the whole queue. A macOS Table may
     // automatically select one row after a multi-file drop; treating that incidental
     // selection as the conversion scope caused only one of the dropped files to run.
-    let reconvertableFiles = queue.files.filter {
+    // Ask before touching existing output, whether the file was converted earlier in this
+    // session or its DNG/TIFF/JPEG is already on disk from a previous run.
+    let needsConfirmation = queue.files.contains {
       $0.status == .completed || $0.status == .failed || $0.status == .warning
+        || $0.outputFileExists
     }
 
-    if !reconvertableFiles.isEmpty {
+    if needsConfirmation {
       let allFileIDs = Set(queue.files.map { $0.id })
       handleReconversion(for: allFileIDs)
     } else {
@@ -380,15 +383,13 @@ struct ContentView: View {
   // MARK: - Context Menu Action Handlers
 
   private func handleConvertSelected(_ fileIDs: Set<X3FFile.ID>) {
-    Task {
-      await fileProcessor.processSelectedFiles(fileIDs)
-    }
+    // Same path as re-conversion: if any selected file already has output on disk the
+    // overwrite/skip dialog is shown; otherwise the files are converted straight away.
+    handleReconversion(for: fileIDs)
   }
 
   private func handleConvertAll() {
-    Task {
-      await fileProcessor.processAllFiles()
-    }
+    convertAll()
   }
 
   private func handleRemoveSelected(_ fileIDs: Set<X3FFile.ID>) {
