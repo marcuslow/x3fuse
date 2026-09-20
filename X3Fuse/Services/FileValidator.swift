@@ -112,7 +112,7 @@ class FileValidator {
     // MARK: - File Renaming
     
     func renameOutputFile(for file: X3FFile) throws {
-        let outputFormat = file.outputFormat ?? settings.outputFormat
+        let outputFormat = settings.effectiveOutputFormat(for: file)
         
         // Only rename DNG files to remove .X3F from filename
         guard outputFormat == .dng else {
@@ -169,7 +169,7 @@ class FileValidator {
     // MARK: - Helper Methods
     
     private func getOutputFileURL(for file: X3FFile) -> URL {
-        let outputFormat = file.outputFormat ?? settings.outputFormat
+        let outputFormat = settings.effectiveOutputFormat(for: file)
         // x3f_extract creates files with the full original filename + new extension
         // The file will be in the effective output directory
         let outputDirectory = URL(fileURLWithPath: settings.effectiveOutputDirectory(for: file.url))

@@ -132,18 +132,21 @@ class X3FFile: NSObject, Identifiable {
     }
   }
 
+  /// The name the output ends up with on disk. DNGs are renamed to `name.dng` after
+  /// conversion; embedded JPEGs and TIFFs keep x3f_extract's `name.X3F.jpg` / `name.X3F.tif`.
   var outputFileName: String {
-    let baseName = url.deletingPathExtension().lastPathComponent
-    let format = outputFormat ?? .dng
-    return baseName + format.fileExtension
+    let format = ConversionSettings.shared.effectiveOutputFormat(for: self)
+    switch format {
+    case .dng:
+      return url.deletingPathExtension().lastPathComponent + format.fileExtension
+    case .embeddedJpg, .tiff:
+      return url.lastPathComponent + format.fileExtension
+    }
   }
 
   var outputFilePath: String {
-    let baseName = url.deletingPathExtension().lastPathComponent
-    let format = outputFormat ?? ConversionSettings.shared.outputFormat
     let effectiveOutputDirectory = ConversionSettings.shared.effectiveOutputDirectory(for: url)
-    let outputDirectoryURL = URL(fileURLWithPath: effectiveOutputDirectory)
-    return outputDirectoryURL.appendingPathComponent(baseName + format.fileExtension).path
+    return URL(fileURLWithPath: effectiveOutputDirectory).appendingPathComponent(outputFileName).path
   }
 
   var outputFileExists: Bool {

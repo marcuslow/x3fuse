@@ -107,6 +107,13 @@ struct ContentView: View {
       ToolbarItem(placement: .primaryAction) {
         HStack {
           Spacer(minLength: 0)
+          Toggle(LocalizationService.toolbarExtractJpgOnly, isOn: $settings.extractJpgOnly)
+            .toggleStyle(.checkbox)
+            .help(LocalizationService.toolbarExtractJpgOnlyHelp)
+            .disabled(queue.isProcessing)
+            .onChange(of: settings.extractJpgOnly) { _, _ in
+              settings.saveSettings()
+            }
           Button(action: convertAll) {
             HStack {
               if queue.isProcessing {

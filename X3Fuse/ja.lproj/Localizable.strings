@@ -24,6 +24,8 @@
 "toolbar.stop_conversion" = "変換を停止";
 "toolbar.convert_all" = "すべて変換";
 "toolbar.convert_selected" = "選択項目を変換";
+"toolbar.extract_jpg_only" = "JPGのみ抽出";
+"toolbar.extract_jpg_only_help" = "DNGに変換せず、各X3Fに埋め込まれたカメラのJPEGを取り出します";
 
 // MARK: - Footer
 "footer.output_directory" = "出力ディレクトリ";

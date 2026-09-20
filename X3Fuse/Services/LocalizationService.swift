@@ -30,6 +30,8 @@ struct LocalizationService {
     static let toolbarStopConversion = NSLocalizedString("toolbar.stop_conversion", comment: "Stop conversion tooltip")
     static let toolbarConvertAll = NSLocalizedString("toolbar.convert_all", comment: "Convert all tooltip")
     static let toolbarConvertSelected = NSLocalizedString("toolbar.convert_selected", comment: "Convert selected tooltip")
+    static let toolbarExtractJpgOnly = NSLocalizedString("toolbar.extract_jpg_only", comment: "Toolbar checkbox: extract embedded JPEG instead of converting")
+    static let toolbarExtractJpgOnlyHelp = NSLocalizedString("toolbar.extract_jpg_only_help", comment: "Tooltip for the Extract JPG only checkbox")
     
     // MARK: - Footer
     static let footerOutputDirectory = NSLocalizedString("footer.output_directory", comment: "Output directory label")

@@ -24,6 +24,8 @@
 "toolbar.stop_conversion" = "Detener conversión";
 "toolbar.convert_all" = "Convertir todo";
 "toolbar.convert_selected" = "Convertir selección";
+"toolbar.extract_jpg_only" = "Solo extraer JPG";
+"toolbar.extract_jpg_only_help" = "Extrae el JPEG incrustado por la cámara de cada X3F en lugar de convertir a DNG";
 
 // MARK: - Footer
 "footer.output_directory" = "Directorio de salida";

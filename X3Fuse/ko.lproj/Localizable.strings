@@ -24,6 +24,8 @@
 "toolbar.stop_conversion" = "변환 중지";
 "toolbar.convert_all" = "모두 변환";
 "toolbar.convert_selected" = "선택된 항목 변환";
+"toolbar.extract_jpg_only" = "JPG만 추출";
+"toolbar.extract_jpg_only_help" = "DNG로 변환하지 않고 각 X3F에 내장된 카메라 JPEG만 추출합니다";
 
 // MARK: - Footer
 "footer.output_directory" = "출력 디렉토리";

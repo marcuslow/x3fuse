@@ -21,6 +21,7 @@ class ConversionSettings {
   var outputDirectory: String? = nil  // nil = use input file directory, string = custom path
   var debugLoggingEnabled: Bool = false
   var onlyProcessNewItems: Bool = true  // Only process files that are queued, not already converted
+  var extractJpgOnly: Bool = false  // Toolbar shortcut: copy the embedded JPEG out instead of converting
 
   // Sort preferences
   var sortField: String = "File Name"  // Store as string for persistence
@@ -98,6 +99,7 @@ class ConversionSettings {
     outputDirectory = defaults.string(forKey: "outputDirectory")
     debugLoggingEnabled = defaults.bool(forKey: "debugLoggingEnabled")
     onlyProcessNewItems = defaults.object(forKey: "onlyProcessNewItems") as? Bool ?? true
+    extractJpgOnly = defaults.bool(forKey: "extractJpgOnly")
     sortField = defaults.string(forKey: "sortField") ?? "File Name"
     sortAscending = defaults.object(forKey: "sortAscending") as? Bool ?? true
   }
@@ -114,6 +116,7 @@ class ConversionSettings {
     defaults.set(outputDirectory, forKey: "outputDirectory")
     defaults.set(debugLoggingEnabled, forKey: "debugLoggingEnabled")
     defaults.set(onlyProcessNewItems, forKey: "onlyProcessNewItems")
+    defaults.set(extractJpgOnly, forKey: "extractJpgOnly")
     defaults.set(sortField, forKey: "sortField")
     defaults.set(sortAscending, forKey: "sortAscending")
   }
@@ -136,6 +139,16 @@ class ConversionSettings {
   // Helper to determine if the Cineon tone curve option should be shown
   var shouldShowCineonOption: Bool {
     return outputFormat == .tiff
+  }
+
+  /// The format a conversion of `file` actually produces. The toolbar's "Extract JPG only"
+  /// checkbox wins over both the global format and any per-file override; otherwise the
+  /// per-file override wins over the global setting.
+  func effectiveOutputFormat(for file: X3FFile) -> OutputFormat {
+    if extractJpgOnly {
+      return .embeddedJpg
+    }
+    return file.outputFormat ?? outputFormat
   }
 
   // Output directory helpers

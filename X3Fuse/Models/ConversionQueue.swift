@@ -433,7 +433,7 @@ class ConversionQueue {
     ]
     
     // Also check for partially written output files that might have been created
-    let outputFormat = file.outputFormat ?? settings.outputFormat
+    let outputFormat = settings.effectiveOutputFormat(for: file)
     let partialOutputPatterns = [
       file.fileName + "." + String(outputFormat.fileExtension.dropFirst()),
       file.url.lastPathComponent + "." + String(outputFormat.fileExtension.dropFirst())

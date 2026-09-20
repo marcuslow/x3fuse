@@ -24,6 +24,8 @@
 "toolbar.stop_conversion" = "停止轉換";
 "toolbar.convert_all" = "全部轉換";
 "toolbar.convert_selected" = "轉換選定";
+"toolbar.extract_jpg_only" = "僅擷取 JPG";
+"toolbar.extract_jpg_only_help" = "只擷取每個 X3F 內嵌的相機 JPEG，而不轉換為 DNG";
 
 // MARK: - Footer
 "footer.output_directory" = "輸出目錄";

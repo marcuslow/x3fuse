@@ -139,7 +139,7 @@ class FileProcessor {
     if queue.isCancelling {
       throw ProcessingError.conversionCancelled("Conversion cancelled by user")
     }
-    if (file.outputFormat ?? settings.outputFormat) == .dng {
+    if settings.effectiveOutputFormat(for: file) == .dng {
       try await applyExifAndOpcodes(to: file)
     }
 
@@ -154,7 +154,7 @@ class FileProcessor {
     try fileValidator.setOutputFilePermissions(for: file)
 
     // Step 6: Rename output file to remove .X3F from filename (only for DNG files)
-    if (file.outputFormat ?? settings.outputFormat) == .dng {
+    if settings.effectiveOutputFormat(for: file) == .dng {
       try fileValidator.renameOutputFile(for: file)
     }
 
@@ -169,7 +169,7 @@ class FileProcessor {
   // MARK: - EXIF and Opcode Application
 
   private func applyExifAndOpcodes(to file: X3FFile) async throws {
-    let outputFormat = file.outputFormat ?? settings.outputFormat
+    let outputFormat = settings.effectiveOutputFormat(for: file)
 
     // x3f_extract creates files with the original filename + new extension
     // For example: "image.X3F" becomes "image.X3F.dng"

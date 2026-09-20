@@ -127,7 +127,7 @@ class X3FConverter {
     var args: [String] = []
 
     // Use file-specific settings if available, otherwise use global settings
-    let outputFormat = file.outputFormat ?? settings.outputFormat
+    let outputFormat = settings.effectiveOutputFormat(for: file)
     let compress = file.compress ?? settings.compress
     let denoiseIntensity = file.denoiseIntensity ?? settings.denoiseIntensity
     let colorProfile = file.colorProfile ?? settings.colorProfile
