@@ -1,3 +1,11 @@
+# 0.1.5-dp2q-fix.7 - Unofficial Extract JPG Only
+
+- New "Extract JPG only" checkbox beside the Convert button. When checked, Convert copies the camera's embedded JPEG out of each X3F instead of producing a DNG, whatever output format is chosen in Settings or per file. The JPEG is the camera's own full-resolution rendering, extracted byte for byte with its EXIF intact, saved next to the source as `name.X3F.jpg`. The setting is remembered between launches.
+- The "Overwrite Existing Files?" dialog now detects existing JPEG and TIFF output as well as DNG, so Skip Existing works for every format.
+- Includes everything from fix.6 (truncated-file guard, Skip Existing), fix.4 and fix.2.
+- Apple Silicon only: the embedded converter in this build is arm64. Intel Macs should use fix.2.
+- This build is locally signed and is not an official notarized release from the upstream X3Fuse project.
+
 # 0.1.5-dp2q-fix.6 - Unofficial Truncated-File Guard and Skip Existing
 
 - Truncated or partially copied X3F files are rejected before conversion instead of hanging the queue. x3f_extract spins forever on a file whose header is intact but whose trailing directory offset points past the end of the file; the app now checks the file structure first and marks such files failed with a "re-copy from the camera" message while the rest of the queue continues. Proposed upstream as x3fuse #45.
