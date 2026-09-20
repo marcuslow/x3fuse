@@ -18,6 +18,7 @@
 "button.done" = "Done";
 "button.browse" = "Browse...";
 "button.overwrite" = "Overwrite";
+"button.skip_existing" = "Skip Existing";
 
 // MARK: - Toolbar and Menu
 "toolbar.stop_conversion" = "Stop conversion";
@@ -132,9 +133,10 @@
 
 // MARK: - Reconversion Confirmation
 "reconversion.title" = "Overwrite Existing Files?";
-"reconversion.message" = "The following files will be overwritten:";
-"reconversion.warning" = "This action cannot be undone. The existing converted files will be permanently replaced.";
+"reconversion.message" = "The following files already have converted output:";
+"reconversion.warning" = "Overwrite permanently replaces these files and cannot be undone. Skip Existing converts only the remaining files and leaves these untouched.";
 "reconversion.location_prefix" = "in ";
+"reconversion.skip_help" = "Convert only the files that have no output yet";
 
 // MARK: - File Status
 "status.queued" = "Queued";

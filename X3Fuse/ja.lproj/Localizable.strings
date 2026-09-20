@@ -18,6 +18,7 @@
 "button.done" = "完了";
 "button.browse" = "参照...";
 "button.overwrite" = "上書き";
+"button.skip_existing" = "既存をスキップ";
 
 // MARK: - Toolbar and Menu
 "toolbar.stop_conversion" = "変換を停止";
@@ -132,9 +133,10 @@
 
 // MARK: - Reconversion Confirmation
 "reconversion.title" = "既存のファイルを上書きしますか？";
-"reconversion.message" = "以下のファイルが上書きされます:";
-"reconversion.warning" = "この操作は元に戻せません。既存の変換済みファイルは完全に置き換えられます。";
+"reconversion.message" = "次のファイルにはすでに変換済みの出力があります:";
+"reconversion.warning" = "「上書き」はこれらのファイルを完全に置き換え、元に戻せません。「既存をスキップ」は残りのファイルのみを変換し、これらは変更しません。";
 "reconversion.location_prefix" = " ";
+"reconversion.skip_help" = "まだ出力のないファイルのみを変換します";
 
 // MARK: - File Status
 "status.queued" = "待機中";

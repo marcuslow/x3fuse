@@ -18,6 +18,7 @@
 "button.done" = "완료";
 "button.browse" = "찾아보기...";
 "button.overwrite" = "덮어쓰기";
+"button.skip_existing" = "기존 파일 건너뛰기";
 
 // MARK: - Toolbar and Menu
 "toolbar.stop_conversion" = "변환 중지";
@@ -132,9 +133,10 @@
 
 // MARK: - Reconversion Confirmation
 "reconversion.title" = "기존 파일을 덮어쓰시겠습니까?";
-"reconversion.message" = "다음 파일들이 덮어쓰여집니다:";
-"reconversion.warning" = "이 작업은 되돌릴 수 없습니다. 기존 변환된 파일들이 영구적으로 교체됩니다.";
+"reconversion.message" = "다음 파일에는 이미 변환된 출력이 있습니다:";
+"reconversion.warning" = "덮어쓰기는 이 파일들을 영구적으로 대체하며 되돌릴 수 없습니다. 기존 파일 건너뛰기는 나머지 파일만 변환하고 이 파일들은 그대로 둡니다.";
 "reconversion.location_prefix" = " ";
+"reconversion.skip_help" = "아직 출력이 없는 파일만 변환합니다";
 
 // MARK: - File Status
 "status.queued" = "대기 중";

@@ -18,6 +18,7 @@
 "button.done" = "完成";
 "button.browse" = "浏览...";
 "button.overwrite" = "覆盖";
+"button.skip_existing" = "跳过已有文件";
 
 // MARK: - Toolbar and Menu
 "toolbar.stop_conversion" = "停止转换";
@@ -132,9 +133,10 @@
 
 // MARK: - Reconversion Confirmation
 "reconversion.title" = "覆盖现有文件？";
-"reconversion.message" = "将覆盖以下文件：";
-"reconversion.warning" = "此操作无法撤消。现有的转换文件将被永久替换。";
+"reconversion.message" = "以下文件已有转换后的输出:";
+"reconversion.warning" = "“覆盖”会永久替换这些文件且无法撤销。“跳过已有文件”只转换其余文件，保留这些文件不变。";
 "reconversion.location_prefix" = "在 ";
+"reconversion.skip_help" = "只转换尚无输出的文件";
 
 // MARK: - File Status
 "status.queued" = "已排队";

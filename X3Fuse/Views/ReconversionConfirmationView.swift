@@ -9,7 +9,11 @@ import SwiftUI
 
 struct ReconversionConfirmationView: View {
   let conflictingFiles: [X3FFile]
+  /// Number of files in the request that have no existing output and would still be
+  /// converted if the user chooses to skip the conflicting ones.
+  let remainingFileCount: Int
   let onConfirm: () -> Void
+  let onSkipExisting: () -> Void
   let onCancel: () -> Void
 
   @State private var isVisible = false
@@ -90,6 +94,12 @@ struct ReconversionConfirmationView: View {
         }
         .keyboardShortcut(.cancelAction)
 
+        Button(LocalizationService.buttonSkipExisting) {
+          onSkipExisting()
+        }
+        .disabled(remainingFileCount == 0)
+        .help(LocalizationService.reconversionSkipHelp)
+
         Button(LocalizationService.buttonOverwrite) {
           onConfirm()
         }
@@ -121,7 +131,9 @@ struct ReconversionConfirmationView: View {
 
     ReconversionConfirmationView(
       conflictingFiles: sampleFiles,
+      remainingFileCount: 3,
       onConfirm: {},
+      onSkipExisting: {},
       onCancel: {}
     )
   }

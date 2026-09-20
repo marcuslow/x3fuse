@@ -18,6 +18,7 @@
 "button.done" = "Listo";
 "button.browse" = "Examinar...";
 "button.overwrite" = "Sobrescribir";
+"button.skip_existing" = "Omitir existentes";
 
 // MARK: - Toolbar and Menu
 "toolbar.stop_conversion" = "Detener conversión";
@@ -132,9 +133,10 @@
 
 // MARK: - Reconversion Confirmation
 "reconversion.title" = "¿Sobrescribir archivos existentes?";
-"reconversion.message" = "Se sobrescribirán los siguientes archivos:";
-"reconversion.warning" = "Esta acción no se puede deshacer. Los archivos convertidos existentes se reemplazarán de forma permanente.";
+"reconversion.message" = "Los siguientes archivos ya tienen una salida convertida:";
+"reconversion.warning" = "Sobrescribir reemplaza estos archivos de forma permanente y no se puede deshacer. Omitir existentes convierte solo los archivos restantes y deja estos intactos.";
 "reconversion.location_prefix" = "en ";
+"reconversion.skip_help" = "Convertir solo los archivos que aún no tienen salida";
 
 // MARK: - File Status
 "status.queued" = "En cola";

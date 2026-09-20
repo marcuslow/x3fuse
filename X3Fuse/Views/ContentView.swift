@@ -141,8 +141,13 @@ struct ContentView: View {
 
             ReconversionConfirmationView(
               conflictingFiles: filesToReconvert,
+              remainingFileCount: fileIDsToReconvert.subtracting(filesToReconvert.map { $0.id })
+                .count,
               onConfirm: {
                 confirmReconversion()
+              },
+              onSkipExisting: {
+                skipExistingAndReconvert()
               },
               onCancel: {
                 showingReconversionConfirmation = false
@@ -441,6 +446,24 @@ struct ContentView: View {
     fileIDsToReconvert.removeAll()
 
     // Start reconversion
+    Task {
+      await fileProcessor.processSelectedFiles(fileIDs)
+    }
+  }
+
+  private func skipExistingAndReconvert() {
+    // Convert only the files that have no output on disk yet; leave the conflicting
+    // ones (and their existing DNG/TIFF/JPEG) untouched.
+    let existingIDs = Set(filesToReconvert.map { $0.id })
+    let fileIDs = fileIDsToReconvert.subtracting(existingIDs)
+
+    showingReconversionConfirmation = false
+    filesToReconvert.removeAll()
+    fileIDsToReconvert.removeAll()
+
+    guard !fileIDs.isEmpty else { return }
+
+    queue.resetFilesForReconversion(fileIDs)
     Task {
       await fileProcessor.processSelectedFiles(fileIDs)
     }

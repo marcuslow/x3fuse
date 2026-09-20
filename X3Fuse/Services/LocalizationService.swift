@@ -24,6 +24,7 @@ struct LocalizationService {
     static let buttonDone = NSLocalizedString("button.done", comment: "Done button")
     static let buttonBrowse = NSLocalizedString("button.browse", comment: "Browse button")
     static let buttonOverwrite = NSLocalizedString("button.overwrite", comment: "Overwrite button")
+    static let buttonSkipExisting = NSLocalizedString("button.skip_existing", comment: "Skip files that already have output")
     
     // MARK: - Toolbar and Menu
     static let toolbarStopConversion = NSLocalizedString("toolbar.stop_conversion", comment: "Stop conversion tooltip")
@@ -141,6 +142,7 @@ struct LocalizationService {
     static let reconversionMessage = NSLocalizedString("reconversion.message", comment: "Reconversion dialog message")
     static let reconversionWarning = NSLocalizedString("reconversion.warning", comment: "Reconversion warning text")
     static let reconversionLocationPrefix = NSLocalizedString("reconversion.location_prefix", comment: "Reconversion location prefix")
+    static let reconversionSkipHelp = NSLocalizedString("reconversion.skip_help", comment: "Tooltip for the Skip Existing button")
     
     // MARK: - File Status
     static let statusQueued = NSLocalizedString("status.queued", comment: "Queued status")
