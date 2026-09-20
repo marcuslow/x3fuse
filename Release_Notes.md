@@ -1,3 +1,13 @@
+# 0.1.5-dp2q-fix.6 - Unofficial Truncated-File Guard and Skip Existing
+
+- Truncated or partially copied X3F files are rejected before conversion instead of hanging the queue. x3f_extract spins forever on a file whose header is intact but whose trailing directory offset points past the end of the file; the app now checks the file structure first and marks such files failed with a "re-copy from the camera" message while the rest of the queue continues. Proposed upstream as x3fuse #45.
+- The "Overwrite Existing Files?" dialog has a new Skip Existing button that converts only the files without output on disk and leaves existing DNGs untouched.
+- That dialog now also appears when freshly added files already have output from a previous run, for every way of starting a conversion (Convert button, Conversion menu / ⌘R, context menu, Convert Selected). Previously it only covered files converted earlier in the same session, so re-adding a folder silently overwrote every DNG.
+- Includes everything from fix.4 (dual-illuminant Quattro profiles, ColorTemp white-balance frame fix) and fix.2.
+- The existing-output check looks for `name.dng`; TIFF and JPEG outputs are not detected yet.
+- Apple Silicon only: the embedded converter in this build is arm64. Intel Macs should use fix.2.
+- This build is locally signed and is not an official notarized release from the upstream X3Fuse project.
+
 # 0.1.5-dp2q-fix.4 - Unofficial Dual-Illuminant DNG Profiles
 
 - Quattro DNGs now carry dual-illuminant camera profiles: ColorMatrix1/ForwardMatrix1 from the camera's Overcast calibration (D65) and ColorMatrix2/ForwardMatrix2 from its Incandescent calibration (CIE Standard Illuminant A). Readers that support both matrices — Apple Photos, Preview and Quick Look (Apple RAW), Adobe Lightroom and Camera Raw — blend them by scene colour temperature, so colours stay accurate under tungsten and mixed light and when the white-balance slider moves away from as-shot. On daylight shots the as-shot rendering is unchanged.

@@ -110,7 +110,7 @@ To inspect what a DNG carries, note that plain `exiftool -ColorMatrix1` reports 
 
 ## Relationship to upstream
 
-This is a personal fork maintained for Apple Photos users of Sigma Quattro cameras. Fixes that belong upstream are submitted there ([x3fuse-core #14](https://github.com/sagwaco/x3fuse-core/pull/14), [x3fuse #43](https://github.com/sagwaco/x3fuse/pull/43)); the dual-illuminant work is kept here until the editor-support picture — Capture One in particular — is clearer. Issues about the dual-illuminant profiles or these releases belong on [this fork's issue tracker](https://github.com/marcuslow/x3fuse/issues); everything else belongs [upstream](https://github.com/sagwaco/x3fuse/issues).
+This is a personal fork maintained for Apple Photos users of Sigma Quattro cameras. Fixes that belong upstream are submitted there ([x3fuse-core #14](https://github.com/sagwaco/x3fuse-core/pull/14), [x3fuse #43](https://github.com/sagwaco/x3fuse/pull/43), [x3fuse #45](https://github.com/sagwaco/x3fuse/pull/45)); the dual-illuminant work is kept here until the editor-support picture — Capture One in particular — is clearer. Issues about the dual-illuminant profiles or these releases belong on [this fork's issue tracker](https://github.com/marcuslow/x3fuse/issues); everything else belongs [upstream](https://github.com/sagwaco/x3fuse/issues).
 
 ## Acknowledgements
 
