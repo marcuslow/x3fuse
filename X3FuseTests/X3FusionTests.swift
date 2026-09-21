@@ -6,7 +6,7 @@
 //
 
 import Testing
-@testable import x3f_convert
+@testable import X3Fuse
 
 struct x3f_convertTests {
 

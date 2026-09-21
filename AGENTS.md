@@ -147,6 +147,25 @@ When cancellation is requested:
 - Settings stored in UserDefaults (Models/ConversionSettings.swift:74-102)
 - Per-file overrides supported for output format, compression, etc.
 
+### Finder Integration (Open With, Dock drops, Quick Action)
+
+- `X3Fuse/Info.plist` declares the X3F document type (`com.sigmaphoto.photopro-x3f`, the UTI
+  Sigma Photo Pro owns, with an imported fallback declaration) and the `x3fuse://` URL scheme.
+- Everything arrives through `.onOpenURL` on the main `WindowGroup` (X3FuseApp.swift) and is
+  routed to **ExternalOpenService** (Services/ExternalOpenService.swift). The view also carries
+  `.handlesExternalEvents(preferring: ["*"], allowing: ["*"])`; without it macOS opens a new
+  window per URL instead of reusing the existing one.
+- Plain file URLs (Open With, Dock, `open -a X3Fuse file.X3F`) only add to the queue.
+  `x3fuse://convert?path=…[&path=…][&format=dng|tiff|jpg]` adds and converts via
+  `FileProcessor.processSelectedFiles` (already-queued files are reused, requests during a running
+  conversion wait, existing output is overwritten with no dialog). `x3fuse://open?path=…` only
+  queues. Parsing lives in the nonisolated `request(from:)` and is unit-tested
+  (X3FuseTests/ExternalOpenServiceTests.swift).
+- The Finder Quick Action is an Automator "Run Shell Script" workflow checked in as
+  `Finder/Convert to DNG with X3Fuse.workflow`; `scripts/install_quick_action.sh` copies it to
+  `~/Library/Services`. It targets `/Applications/X3Fuse.app` explicitly, percent-encodes paths
+  with JavaScript for Automation and sends `x3fuse://convert` URLs in batches of 25 files.
+
 ### Auto-Updates
 
 - Uses Sparkle framework for updates

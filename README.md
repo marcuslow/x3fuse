@@ -79,6 +79,20 @@ The app's built-in updater points at the upstream project's feed, so it will not
 4. Click **Convert**. The whole queue is processed.
 5. Import the DNGs into Apple Photos — or any editor in the table above — and use the white-balance slider freely.
 
+### Convert from Finder
+
+Since fix.9 the app can be driven from Finder without opening it first:
+
+- **Quick Action.** Right-click one or more `.X3F` files (or a folder of them) and choose **Quick Actions → Convert to DNG with X3Fuse**. The installed app opens, queues the files and converts them immediately with your current settings. Files already in the queue are reused, requests that arrive during another conversion wait their turn, and existing output for the chosen files is overwritten without the usual dialog. The Quick Action is an Automator workflow in [`Finder/`](Finder/); install it once with
+
+  ```bash
+  ./scripts/install_quick_action.sh
+  ```
+
+  or double-click `Finder/Convert to DNG with X3Fuse.workflow` and click **Install**. If it does not show up, enable it under System Settings → General → Login Items & Extensions → Extensions → Finder. It talks to `/Applications/X3Fuse.app` (falling back to whichever X3Fuse Launch Services knows), so keep the app there.
+- **Open With / Dock.** `.X3F` files can be opened with X3Fuse from Finder's Open With menu, dropped on its Dock icon, or passed with `open -a X3Fuse file.X3F`. These only add the files to the queue; press **Convert** as usual.
+- **URL scheme.** `x3fuse://convert?format=dng&path=<percent-encoded path>&path=…` queues and converts; `x3fuse://open?path=…` only queues. `format` accepts `dng`, `tiff` or `jpg` and sets the per-file output format. The "Extract JPG only" checkbox still overrides it.
+
 ## Supported cameras
 
 Inherited from upstream. Dual-illuminant profiles apply to the Quattro generation; the fork's colour work has been verified on the dp2 Quattro and is expected to carry over to the other Quattro bodies, which store the same CAMF calibration data.

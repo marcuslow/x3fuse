@@ -2,19 +2,61 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<!-- x3fuse://convert?path=…  — used by the Finder Quick Action to queue files and start
+	     converting them; x3fuse://open?path=… only queues. See Services/ExternalOpenService.swift. -->
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
 			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
+			<string>Viewer</string>
 			<key>CFBundleURLName</key>
-			<string></string>
+			<string>com.sagwa.X3Fuse.convert</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>x3fuse</string>
+			</array>
 		</dict>
+	</array>
+	<!-- Lets Finder offer "Open With → X3Fuse" for X3F files and lets `open -a X3Fuse file.X3F`
+	     and Dock drops add files to the queue. Sigma Photo Pro owns the X3F type identifier; the
+	     imported declaration below is only used when it is not installed. -->
+	<key>CFBundleDocumentTypes</key>
+	<array>
 		<dict>
+			<key>CFBundleTypeName</key>
+			<string>Sigma X3F Raw Image</string>
 			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
-			<key>CFBundleURLName</key>
-			<string></string>
+			<string>Viewer</string>
+			<key>LSHandlerRank</key>
+			<string>Alternate</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>com.sigmaphoto.photopro-x3f</string>
+			</array>
+			<key>CFBundleTypeExtensions</key>
+			<array>
+				<string>x3f</string>
+			</array>
+		</dict>
+	</array>
+	<key>UTImportedTypeDeclarations</key>
+	<array>
+		<dict>
+			<key>UTTypeIdentifier</key>
+			<string>com.sigmaphoto.photopro-x3f</string>
+			<key>UTTypeDescription</key>
+			<string>Sigma X3F Raw Image</string>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>public.camera-raw-image</string>
+			</array>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<array>
+					<string>x3f</string>
+				</array>
+			</dict>
 		</dict>
 	</array>
 	<key>SUFeedURL</key>

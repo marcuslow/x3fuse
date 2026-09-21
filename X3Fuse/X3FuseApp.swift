@@ -22,6 +22,13 @@ struct x3f_convertApp: App {
         WindowGroup {
             ContentView()
                 .environmentObject(updaterService)
+                // Files from Finder ("Open With", Dock drops) and x3fuse:// URLs from the
+                // Finder Quick Action. Without the handlesExternalEvents preference macOS
+                // opens a fresh window for every URL instead of reusing this one.
+                .onOpenURL { url in
+                    ExternalOpenService.shared.handle(url)
+                }
+                .handlesExternalEvents(preferring: ["*"], allowing: ["*"])
         }
         .commands {
             MenuCommands()
