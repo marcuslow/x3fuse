@@ -130,6 +130,11 @@ When cancellation is requested:
 - **Super-resolution (`-sr`/`-sr-model`) and OpenCL (`-ocl`) were removed** — x3fuse-core has no
   upscaler, and `-ocl`/`x3f_set_use_opencl` is now a no-op stub. The corresponding app settings,
   UI, and localization were dropped.
+- **TRUE II white balance** (fork x3fuse-core since `e286256`, fork-only because the numbers are
+  fitted to Adobe's output): `x3f_get_gain` multiplies the CAMF gains by a per-model factor for
+  `SIGMA DP2X` / `DP1X` / `SD15` (`true2_gain_correction` in x3f-sys `process.rs`). Without it those
+  bodies render green everywhere. Fitted on Auto-WB shots; Flash/Incandescent preset shots on these
+  bodies still render green (matrix path breaks down on strongly non-daylight data, not a gain issue).
 - **DNG IFD0 preview** (fork x3fuse-core since `2a27f1c`): the camera's embedded JPEG, box-downscaled
   to ≤1600 px and re-encoded as a baseline JPEG strip (Compression 7, YCbCr, PreviewColorSpace sRGB).
   Finder/Quick Look/Photos show this at thumbnail sizes, so it is what "the DNG looks like" to users;
