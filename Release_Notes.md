@@ -1,3 +1,10 @@
+# 0.1.5-dp2q-fix.10 - Unofficial Camera-JPEG DNG Preview
+
+- DNG thumbnails now look like the picture. Finder, Quick Look, Photos and Lightroom show a DNG's embedded preview at thumbnail sizes instead of rendering the raw data, and the converter used to embed a 300-pixel preview rendered from the linear raw data with no camera profile or tone curve: flat colours, magenta skies. The preview is now the camera's own embedded JPEG, downscaled to at most 1600 pixels on the long edge and stored as a standard JPEG-compressed DNG preview, the same layout Adobe's DNG Converter writes. Files grow by well under 100 KB. The raw data and colour profiles are unchanged, so edits and renders in Photos and other editors are identical to fix.9.
+- Updated embedded converter (x3fuse-core `2a27f1c`, arm64). Everything from fix.9 (Finder Quick Action, Open With, `x3fuse://` scheme), fix.8, fix.7, fix.6, fix.4 and fix.2 is included.
+- Apple Silicon only: the embedded converter is arm64. Intel Macs should use fix.2.
+- This build is locally signed and is not an official notarized release from the upstream X3Fuse project.
+
 # 0.1.5-dp2q-fix.9 - Unofficial Finder Quick Action
 
 - Convert from Finder. Right-click one or more X3F files (or a folder of them) and choose Quick Actions → **Convert to DNG with X3Fuse**. The installed app opens, adds the files to its queue and starts converting them at once with your current settings (output folder, compression, denoise); DNG is requested per file. Files already in the queue are reused, not duplicated, and requests that arrive while another conversion is running wait their turn. Existing output for the chosen files is overwritten without the usual dialog, because the Quick Action is an explicit per-file request. The Quick Action is a small Automator workflow in the repository under `Finder/`; install it once with `./scripts/install_quick_action.sh` (or double-click the `.workflow` and click Install). If the app's "Extract JPG only" checkbox is ticked, it still wins and the Quick Action extracts JPEGs.
