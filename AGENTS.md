@@ -135,9 +135,12 @@ When cancellation is requested:
   `SIGMA DP2X` / `DP1X` / `SD15` (`true2_gain_correction` in x3f-sys `process.rs`). Without it those
   bodies render green everywhere. Fitted on Auto-WB shots; Flash/Incandescent preset shots on these
   bodies still render green (matrix path breaks down on strongly non-daylight data, not a gain issue).
-- **DNG IFD0 preview**: the legacy 300 px raw-rendered RGB preview for every camera (Compression 1).
-  A camera-JPEG preview shipped in fork fix.10-fix.13 (core `2a27f1c`/`cc2d705`) and was reverted in
-  core `f0110f7` (fork fix.14).
+- **DNG IFD0 preview** (fork x3fuse-core since `a69eaa9`, fix.15): the converter's own raw-rendered,
+  uncompressed 8-bit RGB preview, sized to at least `PREVIEW_MIN_WIDTH = 640` px (dng/mod.rs). The
+  reduction factor is floor(ActiveImageArea width / 640) in `x3f_get_preview_with_scale`, so previews
+  land at 660-678 px (about 0.9 MB) instead of the legacy 272-294 px cap. A camera-JPEG preview
+  shipped in fix.10-fix.13 (core `2a27f1c`/`cc2d705`) and was reverted in `f0110f7` (fix.14). Known:
+  TRUE II (DP2X) previews clip blown skies to magenta; the raw plane is unaffected.
 
 ### EXIF and Opcode Handling
 
