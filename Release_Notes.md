@@ -1,3 +1,8 @@
+# 0.1.5-dp2q-fix.13 - Unofficial Preview Scope
+
+- The camera-JPEG DNG preview introduced in fix.10 is now used only for DP1X, DP2X and SD15 files. It was added because those bodies' thumbnails looked flat and magenta, which turned out to be a symptom of their white-balance gains, fixed in fix.12. Quattro, Merrill, DP2 and DP1S DNGs go back to the converter's own rendered preview, as in fix.9 and upstream. Raw data and colour tags are unchanged for every camera.
+- Updated embedded converter (x3fuse-core `cc2d705`, arm64). Includes everything from fix.12 and earlier. Apple Silicon only. Locally signed, not an official notarized upstream release.
+
 # 0.1.5-dp2q-fix.12 - Unofficial DP1X / DP2X / SD15 Colour Fix
 
 - No more green DP1X, DP2X and SD15 conversions. Taken literally, these 2010-11 bodies' stored white-balance gains leave the image about 7 percent short of red, and their colour matrices are extreme enough to turn that small error into a heavy green cast in every DNG reader (Apple Photos, Capture One, Lightroom) and in the app's TIFF and JPEG output. The camera's own JPEG and Adobe's native X3F support render the same files correctly. The converter now applies a per-model gain correction (DP2X 1.068 / 1 / 1.010, DP1X 1.091 / 1 / 1.005, SD15 1.082 / 1 / 1.022) fitted against Adobe DNG Converter output on 71 files. On held-out files the as-shot neutral now matches Adobe's within half a percent on average, and a grey object in a DP2X frame renders within half a percent of the camera JPEG. DP2, DP1S, Merrill and Quattro bodies are unchanged.
