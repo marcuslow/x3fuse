@@ -130,6 +130,11 @@ When cancellation is requested:
 - **Super-resolution (`-sr`/`-sr-model`) and OpenCL (`-ocl`) were removed** — x3fuse-core has no
   upscaler, and `-ocl`/`x3f_set_use_opencl` is now a no-op stub. The corresponding app settings,
   UI, and localization were dropped.
+- **DNG IFD0 preview** (fork x3fuse-core since `2a27f1c`): the camera's embedded JPEG, box-downscaled
+  to ≤1600 px and re-encoded as a baseline JPEG strip (Compression 7, YCbCr, PreviewColorSpace sRGB).
+  Finder/Quick Look/Photos show this at thumbnail sizes, so it is what "the DNG looks like" to users;
+  the old 300 px raw-rendered RGB preview only remains as a fallback when the X3F has no decodable JPEG.
+  `exiftool -b -IFD0:PreviewImage file.dng` extracts it for checks.
 
 ### EXIF and Opcode Handling
 

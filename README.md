@@ -51,6 +51,7 @@ Capture One is the notable exception. It initialises a DNG's white balance from 
 
 - **Manual colour-temperature white balance on Quattro bodies.** Files shot with a Kelvin white balance (CAMF `WhiteBalance` code 11, `ColorTemp`) failed to convert upstream. The camera's `ColorTempTableInfo` is interpolated at `ColorTempValue`, and its gain pair is mapped into the preset gain frame — the table and the presets are normalised differently, and reading the pair naively produces a green cast. Proposed upstream as [x3fuse-core PR #14](https://github.com/sagwaco/x3fuse-core/pull/14).
 - **Convert converts the whole queue.** After dragging several files in, macOS auto-selects one row and upstream converted only that file. Proposed upstream as [x3fuse PR #43](https://github.com/sagwaco/x3fuse/pull/43).
+- **DNG thumbnails that look like the photo.** Finder, Quick Look, Photos and Lightroom show a DNG's embedded preview at thumbnail sizes. Upstream embeds a 300 px preview rendered from the linear raw data without a profile or tone curve (flat colours, magenta skies). Since fix.10 the preview is the camera's own embedded JPEG, downscaled to 1600 px and stored as a JPEG-compressed DNG preview, the layout Adobe's DNG Converter uses. The raw data is unchanged. Fixed in the fork's [x3fuse-core](https://github.com/marcuslow/x3fuse-core) (`2a27f1c`).
 
 ## Installation
 
