@@ -1,3 +1,11 @@
+# 0.1.5-dp2q-fix.9 - Unofficial Finder Quick Action
+
+- Convert from Finder. Right-click one or more X3F files (or a folder of them) and choose Quick Actions → **Convert to DNG with X3Fuse**. The installed app opens, adds the files to its queue and starts converting them at once with your current settings (output folder, compression, denoise); DNG is requested per file. Files already in the queue are reused, not duplicated, and requests that arrive while another conversion is running wait their turn. Existing output for the chosen files is overwritten without the usual dialog, because the Quick Action is an explicit per-file request. The Quick Action is a small Automator workflow in the repository under `Finder/`; install it once with `./scripts/install_quick_action.sh` (or double-click the `.workflow` and click Install). If the app's "Extract JPG only" checkbox is ticked, it still wins and the Quick Action extracts JPEGs.
+- The app now registers the `x3fuse://` URL scheme (`x3fuse://convert?format=dng&path=…` converts, `x3fuse://open?path=…` only queues) and declares the X3F document type, so Finder offers **Open With → X3Fuse**, dropping X3F files on the Dock icon works, and `open -a X3Fuse file.X3F` adds them to the queue. Those routes only queue; you still press Convert.
+- Includes everything from fix.8 (large-batch descriptor fix), fix.7 (Extract JPG only), fix.6 (truncated-file guard, Skip Existing), fix.4 and fix.2.
+- Apple Silicon only: the embedded converter in this build is arm64 (unchanged since fix.4). Intel Macs should use fix.2.
+- This build is locally signed and is not an official notarized release from the upstream X3Fuse project.
+
 # 0.1.5-dp2q-fix.8 - Unofficial Large-Batch Fix
 
 - Large queues no longer collapse near the end. Every converted file leaked four pipe file descriptors (two subprocesses, two pipes each) because the batch loop never pauses and the handles were only released when the whole batch finished. After roughly 2,000 files the app hit its open-file limit and marked every remaining file failed within a fraction of a second, with nothing written to error.log because the logger could not open the log either. The pipes are now closed as soon as each exiftool or x3f_extract run ends, so queues of any size run to completion. Files marked failed this way were never touched; re-convert them.
