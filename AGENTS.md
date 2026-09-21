@@ -135,10 +135,11 @@ When cancellation is requested:
   `SIGMA DP2X` / `DP1X` / `SD15` (`true2_gain_correction` in x3f-sys `process.rs`). Without it those
   bodies render green everywhere. Fitted on Auto-WB shots; Flash/Incandescent preset shots on these
   bodies still render green (matrix path breaks down on strongly non-daylight data, not a gain issue).
-- **DNG IFD0 preview** (fork x3fuse-core since `2a27f1c`): the camera's embedded JPEG, box-downscaled
-  to ≤1600 px and re-encoded as a baseline JPEG strip (Compression 7, YCbCr, PreviewColorSpace sRGB).
-  Finder/Quick Look/Photos show this at thumbnail sizes, so it is what "the DNG looks like" to users;
-  the old 300 px raw-rendered RGB preview only remains as a fallback when the X3F has no decodable JPEG.
+- **DNG IFD0 preview** (fork x3fuse-core since `2a27f1c`, scoped by `preview::uses_camera_jpeg` since
+  fix.13): for `SIGMA DP1X`/`DP2X`/`SD15` only, the camera's embedded JPEG, box-downscaled to ≤1600 px
+  and re-encoded as a baseline JPEG strip (Compression 7, YCbCr, PreviewColorSpace sRGB). Every other
+  camera keeps the legacy 300 px raw-rendered RGB preview (also the fallback when a TRUE II X3F has no
+  decodable JPEG). Finder/Quick Look/Photos show the IFD0 preview at thumbnail sizes.
   `exiftool -b -IFD0:PreviewImage file.dng` extracts it for checks.
 
 ### EXIF and Opcode Handling
