@@ -1,3 +1,10 @@
+# 0.1.5-dp2q-fix.8 - Unofficial Large-Batch Fix
+
+- Large queues no longer collapse near the end. Every converted file leaked four pipe file descriptors (two subprocesses, two pipes each) because the batch loop never pauses and the handles were only released when the whole batch finished. After roughly 2,000 files the app hit its open-file limit and marked every remaining file failed within a fraction of a second, with nothing written to error.log because the logger could not open the log either. The pipes are now closed as soon as each exiftool or x3f_extract run ends, so queues of any size run to completion. Files marked failed this way were never touched; re-convert them.
+- Includes everything from fix.7 (Extract JPG only), fix.6 (truncated-file guard, Skip Existing), fix.4 and fix.2.
+- Apple Silicon only: the embedded converter in this build is arm64 (unchanged since fix.4). Intel Macs should use fix.2.
+- This build is locally signed and is not an official notarized release from the upstream X3Fuse project.
+
 # 0.1.5-dp2q-fix.7 - Unofficial Extract JPG Only
 
 - New "Extract JPG only" checkbox beside the Convert button. When checked, Convert copies the camera's embedded JPEG out of each X3F instead of producing a DNG, whatever output format is chosen in Settings or per file. The JPEG is the camera's own full-resolution rendering, extracted byte for byte with its EXIF intact, saved next to the source as `name.X3F.jpg`. The setting is remembered between launches.
