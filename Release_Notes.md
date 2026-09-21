@@ -1,3 +1,8 @@
+# 0.1.5-dp2q-fix.15 - Unofficial Bigger DNG Preview
+
+- The DNG's embedded preview, which Finder, Quick Look, Photos and Lightroom show at thumbnail sizes, is now at least 640 px wide (660 to 678 px depending on the camera) instead of 272 to 294 px. It is still the converter's own rendered preview, as in fix.14 and upstream, so nothing else in the DNG changes. Each DNG grows by about 0.9 MB.
+- Updated embedded converter (x3fuse-core `a69eaa9`, arm64). Apple Silicon only. Locally signed, not an official notarized upstream release.
+
 # 0.1.5-dp2q-fix.14 - Unofficial Preview Revert
 
 - The camera-JPEG DNG preview (fix.10, narrowed in fix.13) is removed. Every camera's DNG carries the converter's own 300 px rendered preview again, exactly as in fix.9 and upstream. The DP1X, DP2X and SD15 white-balance fix from fix.12 is kept, so those bodies still render correctly.
