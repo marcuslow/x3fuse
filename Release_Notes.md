@@ -1,3 +1,9 @@
+# 0.1.5-dp2q-fix.11 - Unofficial Quick Action Always Makes DNGs
+
+- The Finder Quick Action "Convert to DNG with X3Fuse" now produces a DNG even while the app's "Extract JPG only" checkbox is ticked. In fix.9 and fix.10 the checkbox silently won, so the right-click produced another copy of the embedded JPEG and the old DNG (with its flat preview) stayed on disk. The override applies only to the files in that request; the checkbox and per-file settings behave as before for the Convert button.
+- Includes everything from fix.10 (camera-JPEG DNG previews), fix.9 (Finder integration), fix.8, fix.7, fix.6, fix.4 and fix.2. Converter unchanged from fix.10 (x3fuse-core `2a27f1c`, arm64).
+- Apple Silicon only. Locally signed, not an official notarized upstream release.
+
 # 0.1.5-dp2q-fix.10 - Unofficial Camera-JPEG DNG Preview
 
 - DNG thumbnails now look like the picture. Finder, Quick Look, Photos and Lightroom show a DNG's embedded preview at thumbnail sizes instead of rendering the raw data, and the converter used to embed a 300-pixel preview rendered from the linear raw data with no camera profile or tone curve: flat colours, magenta skies. The preview is now the camera's own embedded JPEG, downscaled to at most 1600 pixels on the long edge and stored as a standard JPEG-compressed DNG preview, the same layout Adobe's DNG Converter writes. Files grow by well under 100 KB. The raw data and colour profiles are unchanged, so edits and renders in Photos and other editors are identical to fix.9.
