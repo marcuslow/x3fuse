@@ -83,6 +83,11 @@ class X3FFile: NSObject, Identifiable {
 
   // Conversion settings override (if different from global settings)
   var outputFormat: OutputFormat?
+  /// Format demanded by an external request (the Finder Quick Action's
+  /// `x3fuse://convert?format=dng`). Unlike `outputFormat` it also beats the
+  /// "Extract JPG only" checkbox, and ExternalOpenService clears it once that
+  /// conversion has run so later manual converts follow the settings again.
+  var requestedOutputFormat: OutputFormat?
   var compress: Bool?
   var denoiseIntensity: Int?
   var colorProfile: ColorProfile?

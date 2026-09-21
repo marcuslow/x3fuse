@@ -139,12 +139,15 @@ final class ExternalOpenService {
     }
 
     if let format = request.outputFormat {
+      // An explicit format from the caller (the Quick Action is named "Convert to
+      // DNG") applies to this conversion only and also overrides the "Extract JPG
+      // only" checkbox; scheduleConversion clears it once the run has finished.
       for file in accepted {
-        file.outputFormat = format
+        file.requestedOutputFormat = format
       }
       if format != .embeddedJpg && settings.extractJpgOnly {
         logger.logConversion(
-          "External open asked for \(format.displayName) but \"Extract JPG only\" is checked; the checkbox wins")
+          "External open asked for \(format.displayName); overriding the \"Extract JPG only\" checkbox for these files")
       }
     }
 
@@ -187,6 +190,12 @@ final class ExternalOpenService {
         // processSelectedFiles resets already-converted files and overwrites their output:
         // the Quick Action is an explicit per-file request, so no overwrite dialog here.
         await self.fileProcessor.processSelectedFiles(liveIDs)
+
+        // The requested format was for this run only; later manual converts of these
+        // queue entries follow the settings and checkbox again.
+        for file in self.queue.files where liveIDs.contains(file.id) {
+          file.requestedOutputFormat = nil
+        }
       }
     }
   }

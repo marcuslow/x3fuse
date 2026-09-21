@@ -163,8 +163,10 @@ When cancellation is requested:
 - Plain file URLs (Open With, Dock, `open -a X3Fuse file.X3F`) only add to the queue.
   `x3fuse://convert?path=…[&path=…][&format=dng|tiff|jpg]` adds and converts via
   `FileProcessor.processSelectedFiles` (already-queued files are reused, requests during a running
-  conversion wait, existing output is overwritten with no dialog). `x3fuse://open?path=…` only
-  queues. Parsing lives in the nonisolated `request(from:)` and is unit-tested
+  conversion wait, existing output is overwritten with no dialog). An explicit `format=` sets
+  `X3FFile.requestedOutputFormat`, which `effectiveOutputFormat(for:)` checks before the
+  "Extract JPG only" checkbox and per-file override; it is cleared after that run.
+  `x3fuse://open?path=…` only queues. Parsing lives in the nonisolated `request(from:)` and is unit-tested
   (X3FuseTests/ExternalOpenServiceTests.swift).
 - The Finder Quick Action is an Automator "Run Shell Script" workflow checked in as
   `Finder/Convert to DNG with X3Fuse.workflow`; `scripts/install_quick_action.sh` copies it to

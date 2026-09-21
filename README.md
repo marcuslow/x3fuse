@@ -92,7 +92,7 @@ Since fix.9 the app can be driven from Finder without opening it first:
 
   or double-click `Finder/Convert to DNG with X3Fuse.workflow` and click **Install**. If it does not show up, enable it under System Settings → General → Login Items & Extensions → Extensions → Finder. It talks to `/Applications/X3Fuse.app` (falling back to whichever X3Fuse Launch Services knows), so keep the app there.
 - **Open With / Dock.** `.X3F` files can be opened with X3Fuse from Finder's Open With menu, dropped on its Dock icon, or passed with `open -a X3Fuse file.X3F`. These only add the files to the queue; press **Convert** as usual.
-- **URL scheme.** `x3fuse://convert?format=dng&path=<percent-encoded path>&path=…` queues and converts; `x3fuse://open?path=…` only queues. `format` accepts `dng`, `tiff` or `jpg` and sets the per-file output format. The "Extract JPG only" checkbox still overrides it.
+- **URL scheme.** `x3fuse://convert?format=dng&path=<percent-encoded path>&path=…` queues and converts; `x3fuse://open?path=…` only queues. `format` accepts `dng`, `tiff` or `jpg` and applies to that conversion only, overriding the settings and the "Extract JPG only" checkbox (since fix.11; fix.9 and fix.10 let the checkbox win).
 
 ## Supported cameras
 

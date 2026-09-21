@@ -141,10 +141,14 @@ class ConversionSettings {
     return outputFormat == .tiff
   }
 
-  /// The format a conversion of `file` actually produces. The toolbar's "Extract JPG only"
-  /// checkbox wins over both the global format and any per-file override; otherwise the
-  /// per-file override wins over the global setting.
+  /// The format a conversion of `file` actually produces. An explicit external request
+  /// (Finder Quick Action "Convert to DNG") wins over everything; otherwise the toolbar's
+  /// "Extract JPG only" checkbox wins over both the global format and any per-file override,
+  /// and the per-file override wins over the global setting.
   func effectiveOutputFormat(for file: X3FFile) -> OutputFormat {
+    if let requested = file.requestedOutputFormat {
+      return requested
+    }
     if extractJpgOnly {
       return .embeddedJpg
     }
