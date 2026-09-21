@@ -135,12 +135,15 @@ When cancellation is requested:
   `SIGMA DP2X` / `DP1X` / `SD15` (`true2_gain_correction` in x3f-sys `process.rs`). Without it those
   bodies render green everywhere. Fitted on Auto-WB shots; Flash/Incandescent preset shots on these
   bodies still render green (matrix path breaks down on strongly non-daylight data, not a gain issue).
-- **DNG IFD0 preview** (fork x3fuse-core since `a69eaa9`, fix.15): the converter's own raw-rendered,
-  uncompressed 8-bit RGB preview, sized to at least `PREVIEW_MIN_WIDTH = 640` px (dng/mod.rs). The
-  reduction factor is floor(ActiveImageArea width / 640) in `x3f_get_preview_with_scale`, so previews
-  land at 660-678 px (about 0.9 MB) instead of the legacy 272-294 px cap. A camera-JPEG preview
-  shipped in fix.10-fix.13 (core `2a27f1c`/`cc2d705`) and was reverted in `f0110f7` (fix.14). Known:
-  TRUE II (DP2X) previews clip blown skies to magenta; the raw plane is unaffected.
+- **DNG IFD0 preview** (fork x3fuse-core `87191a6`, fix.16; scoped by `preview::uses_camera_jpeg`): for
+  `SIGMA DP1X`/`DP2X`/`SD15` only, the camera's embedded JPEG, box-downscaled to ≤1600 px and re-encoded
+  as a baseline JPEG strip (Compression 7, YCbCr, PreviewColorSpace sRGB); fallback to the rendered
+  preview when the X3F has no decodable JPEG. Every other camera (Quattro, Merrill, DP2, DP1S, …) gets
+  the converter's raw-rendered uncompressed RGB preview, at least `PREVIEW_MIN_WIDTH = 640` px wide
+  (dng/mod.rs; reduction = floor(ActiveImageArea width / 640) in `x3f_get_preview_with_scale`, so
+  660-678 px, about 0.9 MB) instead of the legacy 272-294 px cap. History: camera-JPEG preview added
+  fix.10 (`2a27f1c`), scoped fix.13 (`cc2d705`), reverted fix.14 (`f0110f7`), 640 px fix.15 (`a69eaa9`).
+  `exiftool -b -IFD0:PreviewImage file.dng` extracts the JPEG variant for checks.
 
 ### EXIF and Opcode Handling
 
