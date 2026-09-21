@@ -1,3 +1,10 @@
+# 0.1.5-dp2q-fix.12 - Unofficial DP1X / DP2X / SD15 Colour Fix
+
+- No more green DP1X, DP2X and SD15 conversions. Taken literally, these 2010-11 bodies' stored white-balance gains leave the image about 7 percent short of red, and their colour matrices are extreme enough to turn that small error into a heavy green cast in every DNG reader (Apple Photos, Capture One, Lightroom) and in the app's TIFF and JPEG output. The camera's own JPEG and Adobe's native X3F support render the same files correctly. The converter now applies a per-model gain correction (DP2X 1.068 / 1 / 1.010, DP1X 1.091 / 1 / 1.005, SD15 1.082 / 1 / 1.022) fitted against Adobe DNG Converter output on 71 files. On held-out files the as-shot neutral now matches Adobe's within half a percent on average, and a grey object in a DP2X frame renders within half a percent of the camera JPEG. DP2, DP1S, Merrill and Quattro bodies are unchanged.
+- Known limitation: the fit covers Auto white balance, which is 94 percent of the tested library. Shots taken with the **Flash** preset under tungsten light, and the rare Incandescent or Daylight preset shots, still render green on these bodies; the problem there is deeper than the gains and is being looked at separately.
+- Existing DNGs from these cameras keep the old colour until reconverted; the raw data is unchanged, only the colour tags differ, so reconverting is safe.
+- Updated embedded converter (x3fuse-core `e286256`, arm64). Includes everything from fix.11 and earlier. Apple Silicon only. Locally signed, not an official notarized upstream release.
+
 # 0.1.5-dp2q-fix.11 - Unofficial Quick Action Always Makes DNGs
 
 - The Finder Quick Action "Convert to DNG with X3Fuse" now produces a DNG even while the app's "Extract JPG only" checkbox is ticked. In fix.9 and fix.10 the checkbox silently won, so the right-click produced another copy of the embedded JPEG and the old DNG (with its flat preview) stayed on disk. The override applies only to the files in that request; the checkbox and per-file settings behave as before for the Convert button.
