@@ -1,3 +1,8 @@
+# 0.1.5-dp2q-fix.16 - Unofficial Camera-JPEG Thumbnails for DP1X / DP2X / SD15
+
+- DP1X, DP2X and SD15 DNGs embed the camera's own JPEG, downscaled to 1600 px, as their preview again, so Finder, Quick Look and Photos thumbnails match the camera JPEG (the rendered preview clips blown skies to magenta on these bodies). Quattro, Merrill, DP2 and DP1S are not touched: their DNGs are byte-identical to fix.15, with the converter's rendered preview at least 640 px wide.
+- Updated embedded converter (x3fuse-core `87191a6`, arm64). Apple Silicon only. Locally signed, not an official notarized upstream release.
+
 # 0.1.5-dp2q-fix.15 - Unofficial Bigger DNG Preview
 
 - The DNG's embedded preview, which Finder, Quick Look, Photos and Lightroom show at thumbnail sizes, is now at least 640 px wide (660 to 678 px depending on the camera) instead of 272 to 294 px. It is still the converter's own rendered preview, as in fix.14 and upstream, so nothing else in the DNG changes. Each DNG grows by about 0.9 MB.
