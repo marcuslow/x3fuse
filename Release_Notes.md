@@ -1,3 +1,8 @@
+# 0.1.5-dp2q-fix.14 - Unofficial Preview Revert
+
+- The camera-JPEG DNG preview (fix.10, narrowed in fix.13) is removed. Every camera's DNG carries the converter's own 300 px rendered preview again, exactly as in fix.9 and upstream. The DP1X, DP2X and SD15 white-balance fix from fix.12 is kept, so those bodies still render correctly.
+- Updated embedded converter (x3fuse-core `f0110f7`, arm64). Apple Silicon only. Locally signed, not an official notarized upstream release.
+
 # 0.1.5-dp2q-fix.13 - Unofficial Preview Scope
 
 - The camera-JPEG DNG preview introduced in fix.10 is now used only for DP1X, DP2X and SD15 files. It was added because those bodies' thumbnails looked flat and magenta, which turned out to be a symptom of their white-balance gains, fixed in fix.12. Quattro, Merrill, DP2 and DP1S DNGs go back to the converter's own rendered preview, as in fix.9 and upstream. Raw data and colour tags are unchanged for every camera.
