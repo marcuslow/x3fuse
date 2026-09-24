@@ -1,3 +1,9 @@
+# 0.1.5-dp2q-fix.17 - Unofficial Adobe-Matched Colour for DP1X / DP2X / SD15
+
+- DP1X, DP2X and SD15 conversions now apply a per-camera colour correction fitted to Adobe's own rendering of these bodies. Neutrals lose the last trace of green and skin tones come out warmer, closer to Adobe DNG Converter and the camera JPEG. Applies to DNG, TIFF and JPEG output. Very dark saturated blues still render lighter and more teal than Adobe.
+- Quattro, Merrill, DP2 and DP1S are not touched: their output is byte-identical to fix.16.
+- Updated embedded converter (x3fuse-core `ef93fc3`, arm64). Apple Silicon only. Locally signed, not an official notarized upstream release.
+
 # 0.1.5-dp2q-fix.16 - Unofficial Camera-JPEG Thumbnails for DP1X / DP2X / SD15
 
 - DP1X, DP2X and SD15 DNGs embed the camera's own JPEG, downscaled to 1600 px, as their preview again, so Finder, Quick Look and Photos thumbnails match the camera JPEG (the rendered preview clips blown skies to magenta on these bodies). Quattro, Merrill, DP2 and DP1S are not touched: their DNGs are byte-identical to fix.15, with the converter's rendered preview at least 640 px wide.

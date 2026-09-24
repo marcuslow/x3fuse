@@ -135,6 +135,12 @@ When cancellation is requested:
   `SIGMA DP2X` / `DP1X` / `SD15` (`true2_gain_correction` in x3f-sys `process.rs`). Without it those
   bodies render green everywhere. Fitted on Auto-WB shots; Flash/Incandescent preset shots on these
   bodies still render green (matrix path breaks down on strongly non-daylight data, not a gain issue).
+- **TRUE II colour correction** (fork x3fuse-core `ef93fc3`, fix.17, fork-only): `x3f_get_bmt_to_xyz` applies a
+  per-model 3x3 in D50 XYZ after Sigma's per-shot `sRGB→XYZ × CCMatrix` for DP2X / DP1X / SD15
+  (`true2_color_correction` in x3f-sys `process.rs`), fitted in CIELAB to Adobe DNG Converter 18.3 output.
+  Its white shift is divided out of the gain in `x3f_get_gain` (`true2_corrected_bmt`), so ForwardMatrix still
+  maps a balanced neutral to D50. A single fixed matrix replacing Sigma's per-shot one fitted worse; the
+  correction on top of it is what works. Other cameras' DNGs are byte-identical.
 - **DNG IFD0 preview** (fork x3fuse-core `87191a6`, fix.16; scoped by `preview::uses_camera_jpeg`): for
   `SIGMA DP1X`/`DP2X`/`SD15` only, the camera's embedded JPEG, box-downscaled to ≤1600 px and re-encoded
   as a baseline JPEG strip (Compression 7, YCbCr, PreviewColorSpace sRGB); fallback to the rendered
